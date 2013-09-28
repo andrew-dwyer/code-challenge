@@ -4,6 +4,7 @@
 package com.dwyer.andrew.dates.date_tool;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 
 /**
@@ -14,10 +15,10 @@ import org.joda.time.Days;
 public class DateTool {
 
    /** The start date. */
-   private final DateTime startDate;
+   private DateTime startDate;
 
    /** The end date. */
-   private final DateTime endDate;
+   private DateTime endDate;
 
    /**
     * Instantiates a new date tool. Note that dates supplied in reverse order
@@ -53,7 +54,61 @@ public class DateTool {
     */
    public int calcWeekdaysDifference() {
 
+      int count = 0;
+      boolean datesReversed = fixDateOrder();
+
+      DateTime currentDay = startDate;
+
+      // iterate through all days until endDate
+      while (currentDay.isBefore(endDate)) {
+         // if day is on weekend, skip ahead to Monday.
+         if (currentDay.getDayOfWeek() == DateTimeConstants.SATURDAY
+               || currentDay.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+            currentDay = currentDay.plusWeeks(1).withDayOfWeek(
+                  DateTimeConstants.MONDAY);
+         } else {
+            currentDay = currentDay.plusDays(1);
+            count++;
+         }
+      }
+
+      /* returns difference in reverse order if that was the way start and end
+       * date were supplied
+       */
+      if (datesReversed) {
+         return -count;
+      }
+      return count;
+   }
+
+   public int calcCompleteWeeksDifference() {
       throw new UnsupportedOperationException();
+   }
+
+   private boolean fixDateOrder() {
+      if (startDate.compareTo(endDate) > 0) {
+         DateTime tempDate = startDate;
+         startDate = endDate;
+         endDate = tempDate;
+         return true;
+      }
+      return false;
+   }
+
+   public DateTime getStartDate() {
+      return startDate;
+   }
+
+   public void setStartDate(DateTime startDate) {
+      this.startDate = startDate;
+   }
+
+   public DateTime getEndDate() {
+      return endDate;
+   }
+
+   public void setEndDate(DateTime endDate) {
+      this.endDate = endDate;
    }
 
 }

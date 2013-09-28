@@ -6,16 +6,30 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * DateTool Test class.
+ */
 public class DateToolTest {
+
+   /** The default test start date. */
    DateTime startDate;
+
+   /** The default test end date. */
    DateTime endDate;
 
+   /**
+    * Setup normal start dates.
+    */
    @Before
    public void setupNormalStartDates() {
       startDate = new DateTime(2000, 1, 1, 0, 0);
       endDate = new DateTime(2000, 1, 5, 0, 0);
    }
 
+   /**
+    * Test the method "calcDaysDifference". These tests do not need to be
+    * exhaustive as the entire operation is implemented by Joda Time.
+    */
    @Test
    public void testBetweenDays() {
 
@@ -143,6 +157,49 @@ public class DateToolTest {
    public void testBetweenWeekdaysSameDay() {
       DateTool dateTool = new DateTool(startDate, startDate);
       assertEquals(0, dateTool.calcWeekdaysDifference());
+   }
+
+   /**
+    * Test the method "calcCompleteWeeksDifference".
+    */
+   @Test
+   public void testCalcCompleteWeeksDiff() {
+
+      // 6 day week
+      startDate = new DateTime(2000, 1, 3, 0, 0);
+      endDate = new DateTime(2000, 1, 9, 0, 0);
+      DateTool dateTool = new DateTool(startDate, endDate);
+      assertEquals(0, dateTool.calcCompleteWeeksDifference());
+
+      // 7 day week
+      endDate = new DateTime(2000, 1, 10, 0, 0);
+      dateTool = new DateTool(startDate, endDate);
+      assertEquals(1, dateTool.calcCompleteWeeksDifference());
+
+      // 7 day week
+      endDate = new DateTime(2000, 1, 26, 0, 0);
+      dateTool = new DateTool(startDate, endDate);
+      assertEquals(3, dateTool.calcCompleteWeeksDifference());
+   }
+
+   /**
+    * Test the method "calcCompleteWeeksDifference" with reversed dates.
+    */
+   @Test
+   public void testCalcCompleteWeeksDiffReverseOrder() {
+      startDate = new DateTime(2000, 1, 3, 0, 0);
+      endDate = new DateTime(2000, 1, 10, 0, 0);
+      DateTool dateTool = new DateTool(endDate, startDate);
+      assertEquals(-1, dateTool.calcCompleteWeeksDifference());
+   }
+
+   /**
+    * Test the method "calcCompleteWeeksDifference" with the same dates.
+    */
+   @Test
+   public void testCalcCompleteWeeksDiffSameDates() {
+      DateTool dateTool = new DateTool(endDate, startDate);
+      assertEquals(0, dateTool.calcCompleteWeeksDifference());
    }
 
 }

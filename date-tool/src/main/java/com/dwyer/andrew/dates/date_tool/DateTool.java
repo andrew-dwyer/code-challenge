@@ -6,6 +6,7 @@ package com.dwyer.andrew.dates.date_tool;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
+import org.joda.time.Weeks;
 
 /**
  * The DateTool class compares two supplied DateTime instances.
@@ -48,7 +49,9 @@ public class DateTool {
    }
 
    /**
-    * Calculate the difference in weekdays between the two dates.
+    * Calculate the difference in weekdays between the two dates. Days are
+    * treated as complete days regardless of the time in hours or minutes. TODO
+    * confirm if this is the desired behavior.
     *
     * @return the number of weekdays difference
     */
@@ -72,7 +75,8 @@ public class DateTool {
          }
       }
 
-      /* returns difference in reverse order if that was the way start and end
+      /*
+       * returns difference in reverse order if that was the way start and end
        * date were supplied
        */
       if (datesReversed) {
@@ -81,8 +85,13 @@ public class DateTool {
       return count;
    }
 
+   /**
+    * Calculate the difference in complete weeks between the start and end date.
+    *
+    * @return the difference in complete weeks between the start and end date.
+    */
    public int calcCompleteWeeksDifference() {
-      throw new UnsupportedOperationException();
+      return Weeks.weeksBetween(startDate, endDate).getWeeks();
    }
 
    private boolean fixDateOrder() {

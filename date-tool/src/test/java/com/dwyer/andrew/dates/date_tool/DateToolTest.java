@@ -54,7 +54,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates within a single working week.
+    * Test calcWeekdaysDifference for dates within a single working week.
     */
    @Test
    public void testBetweenWeekdaysInsideWeek() {
@@ -65,7 +65,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates across weeks, starting and ending on a
+    * Test calcWeekdaysDifference for dates across weeks, starting and ending on a
     * weekday.
     */
    @Test
@@ -81,7 +81,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates across weeks, starting and/or ending on
+    * Test calcWeekdaysDifference for dates across weeks, starting and/or ending on
     * a weekend.
     */
    @Test
@@ -111,7 +111,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates exceeding months and years.
+    * Test calcWeekdaysDifference for dates exceeding months and years.
     */
    @Test
    public void testBetweenWeekdaysMonthsYears() {
@@ -129,7 +129,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates spanning leap years.
+    * Test calcWeekdaysDifference for dates spanning leap years.
     */
    @Test
    public void testBetweenWeekdaysLeapYears() {
@@ -140,7 +140,7 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates in reverse order.
+    * Test calcWeekdaysDifference for dates in reverse order.
     */
    @Test
    public void testBetweenWeekdaysReverse() {
@@ -151,12 +151,23 @@ public class DateToolTest {
    }
 
    /**
-    * Test testBetweenWeekdays for dates in reverse order.
+    * Test calcWeekdaysDifference for dates in reverse order.
     */
    @Test
    public void testBetweenWeekdaysSameDay() {
       DateTool dateTool = new DateTool(startDate, startDate);
       assertEquals(0, dateTool.calcWeekdaysDifference());
+   }
+
+   /**
+    * Test edge cases of calcWeekdaysDifference. Hours and minutes should be ignored
+    */
+   @Test
+   public void testBetweenWeekdaysEdgeCases() {
+      startDate = new DateTime(2000, 1, 3, 23, 0);
+      endDate = new DateTime(2000, 1, 10, 0, 0);
+      DateTool dateTool = new DateTool(startDate, endDate);
+      assertEquals(5, dateTool.calcWeekdaysDifference());
    }
 
    /**
@@ -200,6 +211,24 @@ public class DateToolTest {
    public void testCalcCompleteWeeksDiffSameDates() {
       DateTool dateTool = new DateTool(endDate, startDate);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
+   }
+
+   /**
+    * Test the method "calcCompleteWeeksDifference" with the same dates.
+    */
+   @Test
+   public void testCalcCompleteWeeksDiffEdgeCase() {
+      // 1 minute less than a complete week
+      startDate = new DateTime(2000, 1, 3, 0, 1);
+      endDate = new DateTime(2000, 1, 10, 0, 0);
+      DateTool dateTool = new DateTool(startDate, endDate);
+      assertEquals(0, dateTool.calcCompleteWeeksDifference());
+
+      // 1 minute more than a complete week
+      startDate = new DateTime(2000, 1, 3, 0, 0);
+      endDate = new DateTime(2000, 1, 10, 0, 1);
+      dateTool = new DateTool(startDate, endDate);
+      assertEquals(1, dateTool.calcCompleteWeeksDifference());
    }
 
 }

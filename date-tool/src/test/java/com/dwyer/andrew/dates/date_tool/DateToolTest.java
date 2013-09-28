@@ -3,6 +3,7 @@ package com.dwyer.andrew.dates.date_tool;
 import static org.junit.Assert.assertEquals;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -295,6 +296,21 @@ public class DateToolTest {
       dateTool.setResultUnit(ResultUnit.SECONDS);
       assertEquals(94953600, dateTool.calcCompleteWeeksDifference());
 
+   }
+
+   @Test
+   public void testCalcDaysDifferenceTimezones() {
+      /* compare two dates in different time zones. The difference between the two
+       * should be exactly one day
+       */
+      startDate = new DateTime(2000, 1, 1, 0, 0, DateTimeZone.UTC);
+      endDate = new DateTime(2000, 1, 2, 12, 0, DateTimeZone.forOffsetHours(10));
+
+      System.out.println(startDate);
+      System.out.println(endDate.toDateTime(DateTimeZone.UTC));
+
+      DateTool dateTool = new DateTool(startDate, endDate);
+      assertEquals(1, dateTool.calcDaysDifference());
    }
 
 

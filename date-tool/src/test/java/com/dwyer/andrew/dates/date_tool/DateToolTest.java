@@ -28,9 +28,11 @@ public class DateToolTest {
     */
    @Before
    public void setupNormalStartDates() {
+
       startDate = new DateTime(2000, 1, 1, 0, 0);
       endDate = new DateTime(2000, 1, 5, 0, 0);
       distantEndDate = new DateTime(2003, 1, 5, 0, 0);
+
    }
 
    /**
@@ -186,17 +188,17 @@ public class DateToolTest {
       // 6 day week
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 9, 0, 0);
-      DateTool dateTool = new DateTool(startDate, endDate);
+      DateTool dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
 
       // 7 day week
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      dateTool = new DateTool(startDate, endDate);
+      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
       assertEquals(1, dateTool.calcCompleteWeeksDifference());
 
       // 7 day week
       endDate = new DateTime(2000, 1, 26, 0, 0);
-      dateTool = new DateTool(startDate, endDate);
+      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
       assertEquals(3, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -207,7 +209,7 @@ public class DateToolTest {
    public void testCalcCompleteWeeksDiffReverseOrder() {
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      DateTool dateTool = new DateTool(endDate, startDate);
+      DateTool dateTool = new DateTool(endDate, startDate, ResultUnit.WEEKS);
       assertEquals(-1, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -216,7 +218,7 @@ public class DateToolTest {
     */
    @Test
    public void testCalcCompleteWeeksDiffSameDates() {
-      DateTool dateTool = new DateTool(endDate, startDate);
+      DateTool dateTool = new DateTool(endDate, startDate, ResultUnit.WEEKS);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -228,13 +230,13 @@ public class DateToolTest {
       // 1 minute less than a complete week
       startDate = new DateTime(2000, 1, 3, 0, 1);
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      DateTool dateTool = new DateTool(startDate, endDate);
+      DateTool dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
 
       // 1 minute more than a complete week
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 10, 0, 1);
-      dateTool = new DateTool(startDate, endDate);
+      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
       assertEquals(1, dateTool.calcCompleteWeeksDifference());
 
    }

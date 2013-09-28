@@ -6,17 +6,23 @@ package com.dwyer.andrew.dates.date_tool;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
+import org.joda.time.Duration;
 import org.joda.time.Weeks;
 
 /**
  * The DateTool class compares two supplied DateTime instances.
+ *
+ * TODO Assumptions: 1 - The method calcWeekdaysDifference treats input start
+ * and end DateTimes as whole days. Part days are ignored. 2 - When returning
+ * durations in different units, I have directly converted days into the
+ * appropriate units, without taking into account the length of the year.
  *
  * @author dwyera
  */
 public class DateTool {
 
    public enum ResultUnit {
-      SECONDS, MINUTES, HOURS, DAYS, YEARS
+      SECONDS, MINUTES, HOURS, DAYS, WEEKS, YEARS
    }
 
    /** The start date. */
@@ -26,7 +32,7 @@ public class DateTool {
    private DateTime endDate;
 
    /** The units of return results */
-   private ResultUnit resultUnit;
+   private ResultUnit resultUnit = ResultUnit.DAYS;
 
    /**
     * Instantiates a new date tool with a default result return value of DAYS
@@ -37,7 +43,7 @@ public class DateTool {
 
       this.startDate = startDate;
       this.endDate = endDate;
-      new DateTool(startDate, endDate, ResultUnit.DAYS);
+      // new DateTool(startDate, endDate, ResultUnit.DAYS);
    }
 
    /**
@@ -57,7 +63,7 @@ public class DateTool {
 
       this.startDate = startDate;
       this.endDate = endDate;
-      this.resultUnit = ResultUnit.DAYS;
+      this.resultUnit = resultUnit;
    }
 
    /**
@@ -65,9 +71,11 @@ public class DateTool {
     *
     * @return the number of days difference
     */
-   public int calcDaysDifference() {
-      return Days.daysBetween(startDate, endDate).getDays();
+   public long calcDaysDifference() {
 
+      Duration duration = Days.daysBetween(startDate, endDate)
+            .toStandardDuration();
+      return periodToSetUnits(duration);
    }
 
    /**
@@ -77,7 +85,7 @@ public class DateTool {
     *
     * @return the number of weekdays difference
     */
-   public int calcWeekdaysDifference() {
+   public long calcWeekdaysDifference() {
 
       int count = 0;
       boolean datesReversed = fixDateOrder();
@@ -102,9 +110,11 @@ public class DateTool {
        * date were supplied
        */
       if (datesReversed) {
-         return -count;
+         count = -count;
       }
-      return count;
+
+      Duration duration = Days.days(count).toStandardDuration();
+      return periodToSetUnits(duration);
    }
 
    /**
@@ -112,8 +122,37 @@ public class DateTool {
     *
     * @return the difference in complete weeks between the start and end date.
     */
-   public int calcCompleteWeeksDifference() {
-      return Weeks.weeksBetween(startDate, endDate).getWeeks();
+   public long calcCompleteWeeksDifference() {
+
+      Duration duration = Weeks.weeksBetween(startDate, endDate)
+            .toStandardDuration();
+      return periodToSetUnits(duration);
+
+   }
+
+   /**
+    * Converts a duration to the specified resultUnit
+    *
+    * @param duration
+    * @return duration in specified unit @see resultUnit
+    */
+   private long periodToSetUnits(Duration duration) {
+      switch (resultUnit) {
+      case YEARS:
+         return duration.toStandardDays().getDays() / 365;
+      case WEEKS:
+         return duration.toStandardDays().getDays() / 7;
+      case DAYS:
+         return duration.getStandardDays();
+      case HOURS:
+         return duration.getStandardHours();
+      case MINUTES:
+         return duration.getStandardMinutes();
+      case SECONDS:
+         return duration.getStandardSeconds();
+      default:
+         return duration.getStandardDays();
+      }
    }
 
    private boolean fixDateOrder() {

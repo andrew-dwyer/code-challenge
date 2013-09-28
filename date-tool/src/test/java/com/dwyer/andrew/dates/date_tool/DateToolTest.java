@@ -6,6 +6,9 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dwyer.andrew.dates.date_tool.DateTool.ResultUnit;
+
+// TODO: Auto-generated Javadoc
 /**
  * DateTool Test class.
  */
@@ -17,6 +20,9 @@ public class DateToolTest {
    /** The default test end date. */
    DateTime endDate;
 
+   /** A DateTime 3 years advanced. */
+   DateTime distantEndDate;
+
    /**
     * Setup normal start dates.
     */
@@ -24,6 +30,7 @@ public class DateToolTest {
    public void setupNormalStartDates() {
       startDate = new DateTime(2000, 1, 1, 0, 0);
       endDate = new DateTime(2000, 1, 5, 0, 0);
+      distantEndDate = new DateTime(2003, 1, 5, 0, 0);
    }
 
    /**
@@ -229,6 +236,65 @@ public class DateToolTest {
       endDate = new DateTime(2000, 1, 10, 0, 1);
       dateTool = new DateTool(startDate, endDate);
       assertEquals(1, dateTool.calcCompleteWeeksDifference());
+
    }
+
+   /**
+    * Test calcDaysDifference method with different units.
+    */
+   @Test
+   public void testCalcDaysDifferenceUnits() {
+      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      assertEquals(3, dateTool.calcDaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.HOURS);
+      assertEquals(26400, dateTool.calcDaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.MINUTES);
+      assertEquals(1584000, dateTool.calcDaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.SECONDS);
+      assertEquals(95040000, dateTool.calcDaysDifference());
+
+   }
+
+   /**
+    * Test calcWeekdaysDifference method with different units.
+    */
+   @Test
+   public void testCalcWeekdaysDifferenceUnits() {
+      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      assertEquals(2, dateTool.calcWeekdaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.HOURS);
+      assertEquals(18840, dateTool.calcWeekdaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.MINUTES);
+      assertEquals(1130400, dateTool.calcWeekdaysDifference());
+
+      dateTool.setResultUnit(ResultUnit.SECONDS);
+      assertEquals(67824000, dateTool.calcWeekdaysDifference());
+   }
+
+   /**
+    * Test calcCompleteWeeksDifference method with different units.
+    */
+   @Test
+   public void testCalcCompleteWeeksDifferenceUnits() {
+      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      assertEquals(3, dateTool.calcCompleteWeeksDifference());
+
+      dateTool.setResultUnit(ResultUnit.HOURS);
+      assertEquals(26376, dateTool.calcCompleteWeeksDifference());
+
+      dateTool.setResultUnit(ResultUnit.MINUTES);
+      assertEquals(1582560, dateTool.calcCompleteWeeksDifference());
+
+      dateTool.setResultUnit(ResultUnit.SECONDS);
+      assertEquals(94953600, dateTool.calcCompleteWeeksDifference());
+
+   }
+
+
 
 }

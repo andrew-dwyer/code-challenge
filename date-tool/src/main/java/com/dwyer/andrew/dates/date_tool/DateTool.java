@@ -15,11 +15,30 @@ import org.joda.time.Weeks;
  */
 public class DateTool {
 
+   public enum ResultUnit {
+      SECONDS, MINUTES, HOURS, DAYS, YEARS
+   }
+
    /** The start date. */
    private DateTime startDate;
 
    /** The end date. */
    private DateTime endDate;
+
+   /** The units of return results */
+   private ResultUnit resultUnit;
+
+   /**
+    * Instantiates a new date tool with a default result return value of DAYS
+    *
+    * @see DateTool(startDate, endDate, resultUnit)
+    */
+   public DateTool(DateTime startDate, DateTime endDate) {
+
+      this.startDate = startDate;
+      this.endDate = endDate;
+      new DateTool(startDate, endDate, ResultUnit.DAYS);
+   }
 
    /**
     * Instantiates a new date tool. Note that dates supplied in reverse order
@@ -30,11 +49,15 @@ public class DateTool {
     *           the start date
     * @param endDate
     *           the end date
+    * @param resultUnit
+    *           the unit that the result of any calculations should be returned
+    *           in
     */
-   public DateTool(DateTime startDate, DateTime endDate) {
+   public DateTool(DateTime startDate, DateTime endDate, ResultUnit resultUnit) {
 
       this.startDate = startDate;
       this.endDate = endDate;
+      this.resultUnit = ResultUnit.DAYS;
    }
 
    /**
@@ -43,7 +66,6 @@ public class DateTool {
     * @return the number of days difference
     */
    public int calcDaysDifference() {
-
       return Days.daysBetween(startDate, endDate).getDays();
 
    }
@@ -118,6 +140,14 @@ public class DateTool {
 
    public void setEndDate(DateTime endDate) {
       this.endDate = endDate;
+   }
+
+   public ResultUnit getResultUnit() {
+      return resultUnit;
+   }
+
+   public void setResultUnit(ResultUnit resultUnit) {
+      this.resultUnit = resultUnit;
    }
 
 }

@@ -1,4 +1,4 @@
-package com.dwyer.andrew.dates.date_tool;
+package com.dwyer.andrew.dates.date_tool.cli;
 
 import java.io.IOException;
 
@@ -11,6 +11,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+
+import com.dwyer.andrew.dates.date_tool.DateTool;
 
 public class DateToolCLI {
 
@@ -61,6 +63,11 @@ public class DateToolCLI {
          }
 
          DateTool dateTool = buildDateTool(line);
+
+         if(!line.hasOption("daysBetween") && !line.hasOption("weekdaysBetween") && !line.hasOption("weeksBetween")) {
+            System.out.println("Atleast one option must be supplied");
+            printHelp();
+         }
 
          if (line.hasOption("daysBetween")) {
             System.out.println("The number of days between the two dates is "

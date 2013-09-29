@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.dwyer.andrew.dates.date_tool;
 
 import org.joda.time.DateTime;
@@ -12,17 +9,17 @@ import org.joda.time.Weeks;
 /**
  * The DateTool class compares two supplied DateTime instances.
  *
- * TODO Assumptions: 1 - The method calcWeekdaysDifference treats input start
- * and end DateTimes as whole days. Part days are ignored. 2 - When returning
- * durations in different units, I have directly converted days into the
- * appropriate units, without taking into account the length of the year.
+ * Assumptions: 1 - The method calcWeekdaysDifference treats input start and end
+ * DateTimes as whole days. Part days are ignored. 2 - When returning durations
+ * in different units, I have directly converted days into the appropriate
+ * units, without taking into account the length of the year.
  *
  * @author dwyera
  */
 public class DateTool {
 
    public enum ResultUnit {
-      SECONDS, MINUTES, HOURS, DAYS, WEEKS, YEARS
+      SECONDS, MINUTES, HOURS, DAYS, WEEKS, YEARS, DEFAULT
    }
 
    /** The start date. */
@@ -32,7 +29,7 @@ public class DateTool {
    private DateTime endDate;
 
    /** The units of return results */
-   private ResultUnit resultUnit = ResultUnit.DAYS;
+   private ResultUnit resultUnit = ResultUnit.DEFAULT;
 
    /**
     * Instantiates a new date tool with a default result return value of DAYS
@@ -43,7 +40,6 @@ public class DateTool {
 
       this.startDate = startDate;
       this.endDate = endDate;
-      // new DateTool(startDate, endDate, ResultUnit.DAYS);
    }
 
    /**
@@ -73,9 +69,13 @@ public class DateTool {
     */
    public long calcDaysDifference() {
 
-      Duration duration = Days.daysBetween(startDate, endDate)
-            .toStandardDuration();
-      return periodToSetUnits(duration);
+      Days days = Days.daysBetween(startDate, endDate);
+
+      if (resultUnit == ResultUnit.DEFAULT) {
+         return days.getDays();
+      } else {
+         return periodToSetUnits(days.toStandardDuration());
+      }
    }
 
    /**
@@ -113,8 +113,13 @@ public class DateTool {
          count = -count;
       }
 
-      Duration duration = Days.days(count).toStandardDuration();
-      return periodToSetUnits(duration);
+      Days days = Days.days(count);
+
+      if (resultUnit == ResultUnit.DEFAULT) {
+         return days.getDays();
+      } else {
+         return periodToSetUnits(days.toStandardDuration());
+      }
    }
 
    /**
@@ -124,9 +129,13 @@ public class DateTool {
     */
    public long calcCompleteWeeksDifference() {
 
-      Duration duration = Weeks.weeksBetween(startDate, endDate)
-            .toStandardDuration();
-      return periodToSetUnits(duration);
+      Weeks weeks = Weeks.weeksBetween(startDate, endDate);
+
+      if (resultUnit == ResultUnit.DEFAULT) {
+         return weeks.getWeeks();
+      } else {
+         return periodToSetUnits(weeks.toStandardDuration());
+      }
 
    }
 

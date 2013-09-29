@@ -75,8 +75,8 @@ public class DateToolTest {
    }
 
    /**
-    * Test calcWeekdaysDifference for dates across weeks, starting and ending on a
-    * weekday.
+    * Test calcWeekdaysDifference for dates across weeks, starting and ending on
+    * a weekday.
     */
    @Test
    public void testBetweenWeekdaysAcrossWeeksToFromWeekdays() {
@@ -91,8 +91,8 @@ public class DateToolTest {
    }
 
    /**
-    * Test calcWeekdaysDifference for dates across weeks, starting and/or ending on
-    * a weekend.
+    * Test calcWeekdaysDifference for dates across weeks, starting and/or ending
+    * on a weekend.
     */
    @Test
    public void testBetweenWeekdaysAcrossWeeksToFromWeekends() {
@@ -170,7 +170,8 @@ public class DateToolTest {
    }
 
    /**
-    * Test edge cases of calcWeekdaysDifference. Hours and minutes should be ignored
+    * Test edge cases of calcWeekdaysDifference. Hours and minutes should be
+    * ignored
     */
    @Test
    public void testBetweenWeekdaysEdgeCases() {
@@ -189,17 +190,17 @@ public class DateToolTest {
       // 6 day week
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 9, 0, 0);
-      DateTool dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
+      DateTool dateTool = new DateTool(startDate, endDate);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
 
       // 7 day week
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
+      dateTool = new DateTool(startDate, endDate);
       assertEquals(1, dateTool.calcCompleteWeeksDifference());
 
       // 7 day week
       endDate = new DateTime(2000, 1, 26, 0, 0);
-      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
+      dateTool = new DateTool(startDate, endDate);
       assertEquals(3, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -210,7 +211,7 @@ public class DateToolTest {
    public void testCalcCompleteWeeksDiffReverseOrder() {
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      DateTool dateTool = new DateTool(endDate, startDate, ResultUnit.WEEKS);
+      DateTool dateTool = new DateTool(endDate, startDate);
       assertEquals(-1, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -219,7 +220,7 @@ public class DateToolTest {
     */
    @Test
    public void testCalcCompleteWeeksDiffSameDates() {
-      DateTool dateTool = new DateTool(endDate, startDate, ResultUnit.WEEKS);
+      DateTool dateTool = new DateTool(endDate, startDate);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
    }
 
@@ -231,13 +232,13 @@ public class DateToolTest {
       // 1 minute less than a complete week
       startDate = new DateTime(2000, 1, 3, 0, 1);
       endDate = new DateTime(2000, 1, 10, 0, 0);
-      DateTool dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
+      DateTool dateTool = new DateTool(startDate, endDate);
       assertEquals(0, dateTool.calcCompleteWeeksDifference());
 
       // 1 minute more than a complete week
       startDate = new DateTime(2000, 1, 3, 0, 0);
       endDate = new DateTime(2000, 1, 10, 0, 1);
-      dateTool = new DateTool(startDate, endDate, ResultUnit.WEEKS);
+      dateTool = new DateTool(startDate, endDate);
       assertEquals(1, dateTool.calcCompleteWeeksDifference());
 
    }
@@ -247,7 +248,8 @@ public class DateToolTest {
     */
    @Test
    public void testCalcDaysDifferenceUnits() {
-      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      DateTool dateTool = new DateTool(startDate, distantEndDate,
+            ResultUnit.YEARS);
       assertEquals(3, dateTool.calcDaysDifference());
 
       dateTool.setResultUnit(ResultUnit.HOURS);
@@ -266,7 +268,8 @@ public class DateToolTest {
     */
    @Test
    public void testCalcWeekdaysDifferenceUnits() {
-      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      DateTool dateTool = new DateTool(startDate, distantEndDate,
+            ResultUnit.YEARS);
       assertEquals(2, dateTool.calcWeekdaysDifference());
 
       dateTool.setResultUnit(ResultUnit.HOURS);
@@ -284,7 +287,8 @@ public class DateToolTest {
     */
    @Test
    public void testCalcCompleteWeeksDifferenceUnits() {
-      DateTool dateTool = new DateTool(startDate, distantEndDate, ResultUnit.YEARS);
+      DateTool dateTool = new DateTool(startDate, distantEndDate,
+            ResultUnit.YEARS);
       assertEquals(3, dateTool.calcCompleteWeeksDifference());
 
       dateTool.setResultUnit(ResultUnit.HOURS);
@@ -300,19 +304,15 @@ public class DateToolTest {
 
    @Test
    public void testCalcDaysDifferenceTimezones() {
-      /* compare two dates in different time zones. The difference between the two
-       * should be exactly one day
+      /*
+       * compare two dates in different time zones. The difference between the
+       * two should be exactly one day
        */
       startDate = new DateTime(2000, 1, 1, 0, 0, DateTimeZone.UTC);
       endDate = new DateTime(2000, 1, 2, 12, 0, DateTimeZone.forOffsetHours(10));
 
-      System.out.println(startDate);
-      System.out.println(endDate.toDateTime(DateTimeZone.UTC));
-
       DateTool dateTool = new DateTool(startDate, endDate);
       assertEquals(1, dateTool.calcDaysDifference());
    }
-
-
 
 }

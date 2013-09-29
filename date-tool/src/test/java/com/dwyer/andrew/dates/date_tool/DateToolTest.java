@@ -150,6 +150,16 @@ public class DateToolTest {
    }
 
    /**
+    * Test calcWeekdaysDifference for very large durations.
+    */
+   @Test
+   public void testBetweenWeekdaysVeryLargeDuration() {
+      endDate = new DateTime(2040, 1, 1, 0, 0);
+      DateTool dateTool = new DateTool(startDate, endDate);
+      assertEquals(10435, dateTool.calcWeekdaysDifference());
+   }
+
+   /**
     * Test calcWeekdaysDifference for dates in reverse order.
     */
    @Test

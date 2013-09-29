@@ -15,7 +15,6 @@ import org.joda.time.format.ISODateTimeFormat;
 public class DateToolCLI {
 
    private final static String dateTimeDescription = "Argument must be an ISO date time string with optional time E.g. 1997-07-16T19:20:30+01:00";
-   private static DateTool dateTool;
    private static HelpFormatter formatter;
    private static Options options;
 

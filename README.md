@@ -1,5 +1,5 @@
-aligent-code-challenge
-======================
+code-challenge
+==============
 
 Requirements
 ------------

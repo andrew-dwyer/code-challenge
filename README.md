@@ -24,9 +24,8 @@ Run Sample Client
 Build Javadocs
 --------------
 
-Run command
+To generate javadocs run the following command.  Javadocs will be created in date-tool\target\site\apidocs
 > mvn javadoc:javadoc
-// Javadocs will be created in date-tool\target\site\apidocs
 
 Use Library
 -----------
